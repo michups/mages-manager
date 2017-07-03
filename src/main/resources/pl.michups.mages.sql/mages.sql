@@ -60,6 +60,23 @@ CREATE TABLE mages_spells (
     
 );
 
+CREATE TABLE spell_books (
+	id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(256),
+    author INT NOT NULL,
+    publish_date DATETIME, 
+    PRIMARY KEY (id),
+  FOREIGN KEY (author) REFERENCES mages (id)
+);
+
+CREATE TABLE spell_books_spells (
+	spell_book INT NOT NULL,
+    spell INT NOT NULL,
+    PRIMARY KEY (spell_book, spell),
+    FOREIGN KEY (spell_book) REFERENCES spell_books (id),
+    FOREIGN KEY (spell) REFERENCES spells (id)
+    
+);
 INSERT INTO woods (name, toughness) VALUES
 	('Beechwood', 50),
     ('Maple', 60),
@@ -76,7 +93,7 @@ INSERT INTO spells (incantation) VALUES
     ('Accio'),
     ('Lumos'),
     ('Alohomora'),
-    ('Expecto Patronum');
+    ('Expecto Patronum'); 
 
 INSERT INTO wands (wood, core, production_date) VALUES (
 	(SELECT id FROM woods WHERE name = 'Beechwood'),
@@ -124,3 +141,79 @@ INSERT INTO mages_spells (mage, spell) VALUES
     ((SELECT id FROM mages WHERE name = 'Jaropluk Yablonsky'),
      (SELECT id FROM spells WHERE incantation = 'Alohomora'));
 
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO spell_books (title, author, publish_date) VALUES ( 
+    'Best spells you can get. Volume 1 (A-Al)',
+    (SELECT id FROM mages WHERE name = 'Blagoja Petrovics') ,
+    '1234-12-23 12:34:56'
+);
+INSERT INTO spell_books_spells (spell_book, spell) VALUES(
+	(SELECT id FROM spell_books WHERE title = 'Best spells you can get. Volume 1 (A-Al)'),
+    (SELECT id FROM spells WHERE incantation = 'Accio')),
+    
+    ((SELECT id FROM spell_books WHERE title = 'Best spells you can get. Volume 1 (A-Al)'),
+    (SELECT id FROM spells WHERE incantation = 'Alohomora') 
+    
+);
+ 
+ 
+
+INSERT INTO spell_books (title, author, publish_date) VALUES ( 
+    'Become a thief in one day',
+    (SELECT id FROM mages WHERE name = 'Bojan Letvin') ,
+    '1234-12-23 12:34:56'
+);
+INSERT INTO spell_books_spells (spell_book, spell) VALUES(
+	(SELECT id FROM spell_books WHERE title = 'Become a thief in one day'),
+    (SELECT id FROM spells WHERE incantation = 'Accio')),
+    
+	((SELECT id FROM spell_books WHERE title = 'Become a thief in one day'),
+    (SELECT id FROM spells WHERE incantation = 'Silencion')),
+    
+    ((SELECT id FROM spell_books WHERE title = 'Become a thief in one day'),
+    (SELECT id FROM spells WHERE incantation = 'Alohomora') 
+    
+);
+
+
+
+INSERT INTO spell_books (title, author, publish_date) VALUES ( 
+    'Picking up a girl - complite guide for dummies',
+    (SELECT id FROM mages WHERE name = 'Zhivko Bernatsky') ,
+    '1269-12-23 12:12:56'
+);
+INSERT INTO spell_books_spells (spell_book, spell) VALUES(
+	(SELECT id FROM spell_books WHERE title = 'Picking up a girl - complite guide for dummies'),
+    (SELECT id FROM spells WHERE incantation = 'Accio')),
+    
+	((SELECT id FROM spell_books WHERE title = 'Picking up a girl - complite guide for dummies'),
+    (SELECT id FROM spells WHERE incantation = 'Silencion') 
+    
+);
+
+
+
+INSERT INTO spell_books (title, author, publish_date) VALUES ( 
+    'Self-defense for weaklings',
+    (SELECT id FROM mages WHERE name = 'Bojan Letvin') ,
+    now()
+);
+INSERT INTO spell_books_spells (spell_book, spell) VALUES(
+	(SELECT id FROM spell_books WHERE title = 'Self-defense for weaklings'),
+    (SELECT id FROM spells WHERE incantation = 'Accio')),
+    
+	((SELECT id FROM spell_books WHERE title = 'Self-defense for weaklings'),
+    (SELECT id FROM spells WHERE incantation = 'Expecto Patronum') 
+    
+); 
