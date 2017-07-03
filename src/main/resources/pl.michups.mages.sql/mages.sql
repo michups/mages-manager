@@ -29,6 +29,7 @@ CREATE TABLE wands (
 	id INT NOT NULL AUTO_INCREMENT,
     wood INT NOT NULL,
     core INT NOT NULL,
+    production_date DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (wood) REFERENCES woods (id),
     FOREIGN KEY (core) REFERENCES cores (id)
@@ -77,27 +78,31 @@ INSERT INTO spells (incantation) VALUES
     ('Alohomora'),
     ('Expecto Patronum');
 
-INSERT INTO wands (wood, core) VALUES (
+INSERT INTO wands (wood, core, production_date) VALUES (
 	(SELECT id FROM woods WHERE name = 'Beechwood'),
-    (SELECT id from cores WHERE name = 'Dragon heartstring')
+    (SELECT id from cores WHERE name = 'Dragon heartstring'),
+    now()
 );
 INSERT INTO mages (name, wand) VALUES ('Bojan Letvin', (SELECT LAST_INSERT_ID()));
 
-INSERT INTO wands (wood, core) VALUES (
+INSERT INTO wands (wood, core, production_date) VALUES (
 	(SELECT id FROM woods WHERE name = 'Holly'),
-    (SELECT id from cores WHERE name = 'Phoenix feather')
+    (SELECT id from cores WHERE name = 'Phoenix feather'),
+    '2015-07-01 09:01:15'
 );
 INSERT INTO mages (name, wand) VALUES ('Zhivko Bernatsky', (SELECT LAST_INSERT_ID()));
 
-INSERT INTO wands (wood, core) VALUES (
+INSERT INTO wands (wood, core, production_date) VALUES (
 	(SELECT id FROM woods WHERE name = 'Maple'),
-    (SELECT id from cores WHERE name = 'Unicorn hair')
+    (SELECT id from cores WHERE name = 'Unicorn hair'),
+    '1999-05-01 22:00:00'
 );
 INSERT INTO mages (name, wand) VALUES ('Blagoja Petrovics', (SELECT LAST_INSERT_ID()));
 
-INSERT INTO wands (wood, core) VALUES (
+INSERT INTO wands (wood, core, production_date) VALUES (
 	(SELECT id FROM woods WHERE name = 'Maple'),
-    (SELECT id from cores WHERE name = 'Unicorn hair')
+    (SELECT id from cores WHERE name = 'Unicorn hair'),
+    now()
 );
 INSERT INTO mages (name, wand) VALUES ('Jaropluk Yablonsky', (SELECT LAST_INSERT_ID()));
 
