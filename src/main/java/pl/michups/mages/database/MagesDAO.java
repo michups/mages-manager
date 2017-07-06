@@ -40,7 +40,7 @@ public class MagesDAO extends BaseDAO<Mage> {
 
     @Override
     public Object[] getColumnsValues(Mage value) {
-        Object[] values = {value.getName(), value.getWand().getId(), value.getSupervisor() == null? null : value.getSupervisor().getId()};
+        Object[] values = {value.getName(), value.getWand().getId(), value.getSupervisor() == null ? null : value.getSupervisor().getId()};
         return values;
     }
 
@@ -59,9 +59,9 @@ public class MagesDAO extends BaseDAO<Mage> {
 
         int mageId = value.getId();
 
-        if(newSpells.size()==0){
+        if (newSpells.size() == 0) {
             spellDAO.deleteAllSpellsForMage(mageId);
-        } else if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
+        } else if (!newSpells.containsAll(oldSpells) || newSpells.size() != oldSpells.size()) {
 
             spellDAO.deleteAllSpellsForMage(mageId);
             spellDAO.insertSpellsForMage(value.getId(), value.getSpells());
@@ -74,18 +74,12 @@ public class MagesDAO extends BaseDAO<Mage> {
 
         List<Spell> spells = value.getSpells();
         List<Mage> mages = findALl();
-        mages.sort((o1, o2) -> o1.getId()-o2.getId());
-        int lastId = mages.get(mages.size()-1).getId();
+        mages.sort((o1, o2) -> o1.getId() - o2.getId());
+        int lastId = mages.get(mages.size() - 1).getId();
         if (spells.size() != 0) {
             SpellsDAO spellDAO = new SpellsDAO();
             spellDAO.insertSpellsForMage(lastId, spells);
         }
-    }
-
-    @Override
-    public List<Mage> findALl() {
-        String sql = "SELECT * FROM " + getTableName();
-        return executeQuery(sql, new Object[0]);
     }
 
     @Override

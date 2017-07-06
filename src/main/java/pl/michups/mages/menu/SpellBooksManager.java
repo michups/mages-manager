@@ -34,21 +34,20 @@ public class SpellBooksManager extends BaseManager<SpellBook, SpellBooksDAO> {
 
         System.out.print("publish date (ex. 2012-12-20): ");
         String dataStr1 = scanner.next();
-        Date date= parseStringToDate(dataStr1);
+        Date date = parseStringToDate(dataStr1);
 
         SpellsDAO spellsDAO = new SpellsDAO();
         List<Spell> spells = new ArrayList<>();
-        while (true){
+        while (true) {
             System.out.print("spell id (0 - ends adding spells): ");
             int spellId = scanner.nextInt();
-            if(spellId == 0){
+            if (spellId == 0) {
                 break;
             }
             Spell spell = spellsDAO.find(spellId);
-            if(spell==null){
-                System.out.println("Spell id = "+spellId+" doesn't exist." );
-            }
-            else {
+            if (spell == null) {
+                System.out.println("Spell id = " + spellId + " doesn't exist.");
+            } else {
                 spells.add(spell);
             }
         }

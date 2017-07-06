@@ -34,7 +34,7 @@ public class WandsManager extends BaseManager<Wand, WandsDAO> {
 
         System.out.print("Production date (ex. 2012-12-20): ");
         String dataStr1 = scanner.next();
-        Date date= parseStringToDate(dataStr1);
+        Date date = parseStringToDate(dataStr1);
 
         return new Wand(wood, core, date);
     }

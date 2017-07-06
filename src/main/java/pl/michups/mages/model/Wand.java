@@ -1,6 +1,7 @@
 package pl.michups.mages.model;
 
 import lombok.*;
+
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
 @ToString
 public class Wand {
     private int id;
-    private  Wood wood;
+    private Wood wood;
     private Core core;
     private Date productionDate;
 

@@ -29,9 +29,9 @@ public abstract class BaseDAO<T> {
                 statement.setString(paramIndex, (String) param);
             } else if (param instanceof Integer) {
                 statement.setInt(paramIndex, (Integer) param);
-            }  else if (param instanceof Date) {
+            } else if (param instanceof Date) {
                 statement.setObject(paramIndex, param);
-            } else  if (param == null) {
+            } else if (param == null) {
                 statement.setNull(paramIndex, Types.INTEGER);
             } else {
                 throw new IllegalArgumentException("Unsupported class " + param.getClass());
@@ -114,7 +114,7 @@ public abstract class BaseDAO<T> {
         String sql = "SELECT * FROM " + getTableName() + " WHERE id = ?";
         Object[] params = {id};
         List<T> tList = executeQuery(sql, params);
-        return tList.size()==0 ? null : tList.get(0);
+        return tList.size() == 0 ? null : tList.get(0);
     }
 
 }

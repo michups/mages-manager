@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by michups on 03.07.17.
  */
-public class MagesManager  extends BaseManager<Mage, MagesDAO> {
+public class MagesManager extends BaseManager<Mage, MagesDAO> {
 
     public MagesManager() {
         dao = new MagesDAO();
@@ -32,17 +32,16 @@ public class MagesManager  extends BaseManager<Mage, MagesDAO> {
 
         SpellsDAO spellsDAO = new SpellsDAO();
         List<Spell> spells = new ArrayList<>();
-        while (true){
+        while (true) {
             System.out.print("spell id (0 - end adding spells): ");
             int spellId = scanner.nextInt();
-            if(spellId == 0){
+            if (spellId == 0) {
                 break;
             }
             Spell spell = spellsDAO.find(spellId);
-            if(spell==null){
-                System.out.println("Spell id = "+spellId+" doesn't exist." );
-            }
-            else {
+            if (spell == null) {
+                System.out.println("Spell id = " + spellId + " doesn't exist.");
+            } else {
                 spells.add(spell);
             }
         }

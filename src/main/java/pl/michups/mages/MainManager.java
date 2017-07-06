@@ -28,19 +28,19 @@ public class MainManager {
                     coresManager.manage(scanner);
                     break;
                 }
-                case  "mages": {
+                case "mages": {
                     magesManager.manage(scanner);
                     break;
                 }
-                case  "spells": {
+                case "spells": {
                     spellsManager.manage(scanner);
                     break;
                 }
-                case  "spellbooks": {
+                case "spellbooks": {
                     spellBooksManager.manage(scanner);
                     break;
                 }
-                case  "wands" : {
+                case "wands": {
                     wandsManager.manage(scanner);
                     break;
                 }

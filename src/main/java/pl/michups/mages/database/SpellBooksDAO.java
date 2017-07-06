@@ -56,12 +56,12 @@ public class SpellBooksDAO extends BaseDAO<SpellBook> {
         SpellsDAO spellDAO = new SpellsDAO();
         List<Spell> oldSpells = spellDAO.findBookSpells(value.getId());
         List<Spell> newSpells = value.getSpells();
-        if(newSpells.size()==0){
+        if (newSpells.size() == 0) {
             spellDAO.deleteAllSpellsForSpellBook(value.getId());
-        } else if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
+        } else if (!newSpells.containsAll(oldSpells) || newSpells.size() != oldSpells.size()) {
 
             spellDAO.deleteAllSpellsForSpellBook(value.getId());
-            spellDAO.insertSpellsToSpellBook(value.getId(), value.getSpells());
+            spellDAO.insertSpellsForSpellBook(value.getId(), value.getSpells());
         }
         super.update(value);
     }
@@ -72,18 +72,12 @@ public class SpellBooksDAO extends BaseDAO<SpellBook> {
         List<Spell> spells = value.getSpells();
 
         List<SpellBook> spellBooks = findALl();
-        spellBooks.sort((o1, o2) -> o1.getId()-o2.getId());
-        int lastId = spellBooks.get(spellBooks.size()-1).getId();
+        spellBooks.sort((o1, o2) -> o1.getId() - o2.getId());
+        int lastId = spellBooks.get(spellBooks.size() - 1).getId();
         if (spells.size() != 0) {
             SpellsDAO spellDAO = new SpellsDAO();
-            spellDAO.insertSpellsToSpellBook(lastId, spells);
+            spellDAO.insertSpellsForSpellBook(lastId, spells);
         }
-    }
-
-    @Override
-    public List<SpellBook> findALl() {
-        String sql = "SELECT * FROM " + getTableName();
-        return executeQuery(sql, new Object[0]);
     }
 
     @Override

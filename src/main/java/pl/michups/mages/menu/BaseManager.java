@@ -43,7 +43,7 @@ public abstract class BaseManager<T, D extends BaseDAO<T>> {
                     break;
                 }
                 case "b": {
-                    run=false;
+                    run = false;
                     break;
                 }
             }
@@ -62,7 +62,8 @@ public abstract class BaseManager<T, D extends BaseDAO<T>> {
         T newValue = parseNew(scanner);
         copyId(value, newValue);
         dao.update(newValue);
-    };
+    }
+
 
     private void delete(Scanner scanner) {
         System.out.print("id: ");
@@ -96,7 +97,7 @@ public abstract class BaseManager<T, D extends BaseDAO<T>> {
         inutUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             date = inutUTC.parse(dateStr);
-        }catch (ParseException ex){
+        } catch (ParseException ex) {
             ex.printStackTrace();
         }
         return date;
