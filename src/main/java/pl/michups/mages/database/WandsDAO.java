@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by michups on 03.07.17.
  */
-public class WandDAO  extends BaseDAO<Wand> {
+public class WandsDAO extends BaseDAO<Wand> {
 
     private String[] columns = {"wood", "core", "production_date"};
 
@@ -27,8 +27,8 @@ public class WandDAO  extends BaseDAO<Wand> {
         int coreId = result.getInt(3);
         Date date = result.getTimestamp(4);
 
-        Wood wood = new WoodDAO().find(woodId);
-        Core core = new CoreDAO().find(coreId);
+        Wood wood = new WoodsDAO().find(woodId);
+        Core core = new CoresDAO().find(coreId);
 
         return new Wand(id, wood, core, date);
     }
@@ -40,7 +40,7 @@ public class WandDAO  extends BaseDAO<Wand> {
 
     @Override
     public Object[] getColumnsValues(Wand value) {
-        Object[] values = {value.getWood().getId(), value.getCore().getId(), value.getDate()};
+        Object[] values = {value.getWood().getId(), value.getCore().getId(), value.getProductionDate()};
         return values;
     }
 

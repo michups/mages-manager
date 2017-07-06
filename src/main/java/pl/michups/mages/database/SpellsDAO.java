@@ -5,15 +5,18 @@ import pl.michups.mages.model.Mage;
 import pl.michups.mages.model.Spell;
 import pl.michups.mages.model.SpellBook;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by michups on 03.07.17.
  */
-public class SpellDAO extends BaseDAO<Spell> {
+public class SpellsDAO extends BaseDAO<Spell> {
 
     private String[] columns = {"incantation"};
 
@@ -53,8 +56,8 @@ public class SpellDAO extends BaseDAO<Spell> {
     }
 
 
-    public void insertSpellsForMage(Mage value, List<Spell> spells) {
-        int mageId= value.getId();
+    public void insertSpellsForMage(int id, List<Spell> spells) {
+        int mageId= id;
         StringBuffer sql = new StringBuffer("INSERT INTO mages_spells");
         sql.append(" (");
         sql.append("mage, spell )");
@@ -70,10 +73,10 @@ public class SpellDAO extends BaseDAO<Spell> {
         execute(sql.toString(), values);
     }
 
-    public void deleteAllSpellsForMage(Mage value) {
+    public void deleteAllSpellsForMage(int mageId) {
 
         String sql = "DELETE FROM mages_spells  WHERE mage = ?";
-        Object[] params = {value.getId()};
+        Object[] params = {mageId};
         execute(sql, params);
 
     }
@@ -92,9 +95,9 @@ public class SpellDAO extends BaseDAO<Spell> {
         return executeQuery(sql, params);
     }
 
-    public void insertSpellsToSpellBook(SpellBook value, List<Spell> spells) {
+    public void insertSpellsToSpellBook(int id, List<Spell> spells) {
 
-        int spellBookId= value.getId();
+        int spellBookId= id;
         StringBuffer sql = new StringBuffer("INSERT INTO spell_books_spells");
         sql.append(" (");
         sql.append("spell_book, spell )");
@@ -110,10 +113,10 @@ public class SpellDAO extends BaseDAO<Spell> {
         execute(sql.toString(), values);
     }
 
-    public void deleteAllSpellsForSpellBook(SpellBook value) {
+    public void deleteAllSpellsForSpellBook(int id) {
 
         String sql = "DELETE FROM spell_books_spells  WHERE spell_book = ?";
-        Object[] params = {value.getId()};
+        Object[] params = {id};
         execute(sql, params);
 
     }
@@ -126,16 +129,31 @@ public class SpellDAO extends BaseDAO<Spell> {
         }
     }
 
-    public void delete(Spell spell){
+    public void delete(int id){
 
         String sql = "DELETE FROM spell_books_spells  WHERE spell = ?";
-        Object[] params = {spell.getId()};
+        Object[] params = {id};
         execute(sql, params);
 
         sql = "DELETE FROM mages_spells  WHERE spell = ?";
-        execute(sql, params);
-        super.delete(spell);
+        Object[] params2 = {id};
+        execute(sql, params2);
+
+        super.delete(id);
     }
 
+    public int getLastInsertId() {
+        int id = 0;
+        String sql = "SELECT LAST_INSERT_ID()";
+        try (Connection con = ConnectionFactory.createConnection();
+             PreparedStatement statement = con.prepareStatement(sql);) {
+            try (ResultSet result = statement.executeQuery();) {
+                id = result.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return id;
+    }
 
 }

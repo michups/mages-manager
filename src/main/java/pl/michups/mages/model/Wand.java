@@ -16,11 +16,11 @@ public class Wand {
     private int id;
     private  Wood wood;
     private Core core;
-    private Date date;
+    private Date productionDate;
 
-    public Wand(Wood wood, Core core, Date date) {
+    public Wand(Wood wood, Core core, Date productionDate) {
         this.wood = wood;
         this.core = core;
-        this.date = date;
+        this.productionDate = productionDate;
     }
 }

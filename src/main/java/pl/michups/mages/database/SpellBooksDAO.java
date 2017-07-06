@@ -3,7 +3,6 @@ package pl.michups.mages.database;
 import pl.michups.mages.model.Mage;
 import pl.michups.mages.model.Spell;
 import pl.michups.mages.model.SpellBook;
-import pl.michups.mages.model.Wand;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Created by michups on 03.07.17.
  */
-public class SpellBookDAO extends BaseDAO<SpellBook> {
+public class SpellBooksDAO extends BaseDAO<SpellBook> {
 
     private String[] columns = {"title", "author", "publish_date"};
 
@@ -29,8 +28,8 @@ public class SpellBookDAO extends BaseDAO<SpellBook> {
         int authorId = result.getInt(3);
         Date date = result.getDate(4);
 
-        List<Spell> spells = new SpellDAO().findBookSpells(id);
-        Mage author = new MageDAO().find(authorId);
+        List<Spell> spells = new SpellsDAO().findBookSpells(id);
+        Mage author = new MagesDAO().find(authorId);
 
         return new SpellBook(id, title, author, date, spells);
     }
@@ -54,22 +53,31 @@ public class SpellBookDAO extends BaseDAO<SpellBook> {
     @Override
     public void update(SpellBook value) {
 
-        SpellDAO spellDAO = new SpellDAO();
+        SpellsDAO spellDAO = new SpellsDAO();
         List<Spell> oldSpells = spellDAO.findBookSpells(value.getId());
         List<Spell> newSpells = value.getSpells();
-        if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
+        if(newSpells.size()==0){
+            spellDAO.deleteAllSpellsForSpellBook(value.getId());
+        } else if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
 
-            spellDAO.deleteAllSpellsForSpellBook(value);
-            spellDAO.insertSpellsToSpellBook(value, value.getSpells());
+            spellDAO.deleteAllSpellsForSpellBook(value.getId());
+            spellDAO.insertSpellsToSpellBook(value.getId(), value.getSpells());
         }
         super.update(value);
     }
 
     @Override
     public void insert(SpellBook value) {
-        SpellDAO spellDAO = new SpellDAO();
-        spellDAO.insertSpellsToSpellBook(value, value.getSpells());
         super.insert(value);
+        List<Spell> spells = value.getSpells();
+
+        List<SpellBook> spellBooks = findALl();
+        spellBooks.sort((o1, o2) -> o1.getId()-o2.getId());
+        int lastId = spellBooks.get(spellBooks.size()-1).getId();
+        if (spells.size() != 0) {
+            SpellsDAO spellDAO = new SpellsDAO();
+            spellDAO.insertSpellsToSpellBook(lastId, spells);
+        }
     }
 
     @Override
@@ -79,11 +87,11 @@ public class SpellBookDAO extends BaseDAO<SpellBook> {
     }
 
     @Override
-    public void delete(SpellBook value) {
-        SpellDAO spellDAO = new SpellDAO();
-        spellDAO.deleteAllSpellsForSpellBook(value);
+    public void delete(int id) {
+        SpellsDAO spellDAO = new SpellsDAO();
+        spellDAO.deleteAllSpellsForSpellBook(id);
 
-        super.delete(getPrimaryKeyValue(value));
+        super.delete(id);
     }
 
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by michups on 03.07.17.
  */
-public class WoodDAO  extends BaseDAO<Wood> {
+public class WoodsDAO extends BaseDAO<Wood> {
 
     private String[] columns = {"name", "toughness"};
 

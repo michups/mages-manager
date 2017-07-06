@@ -1,9 +1,6 @@
 package pl.michups.mages.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,6 +31,8 @@ public abstract class BaseDAO<T> {
                 statement.setInt(paramIndex, (Integer) param);
             }  else if (param instanceof Date) {
                 statement.setObject(paramIndex, param);
+            } else  if (param == null) {
+                statement.setNull(paramIndex, Types.INTEGER);
             } else {
                 throw new IllegalArgumentException("Unsupported class " + param.getClass());
             }

@@ -6,14 +6,12 @@ import pl.michups.mages.model.Wand;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by michups on 03.07.17.
  */
-public class MageDAO extends BaseDAO<Mage> {
+public class MagesDAO extends BaseDAO<Mage> {
 
     private String[] columns = {"name", "wand", "supervisor"};
 
@@ -28,9 +26,9 @@ public class MageDAO extends BaseDAO<Mage> {
         String name = result.getString(2);
         int wandId = result.getInt(3);
         int supervisorId = result.getInt(4);
-        List<Spell> spells = new SpellDAO().findMageSpells(id);
-        Wand wand = new WandDAO().find(wandId);
-        Mage supervisor = new MageDAO().find(supervisorId);
+        List<Spell> spells = new SpellsDAO().findMageSpells(id);
+        Wand wand = new WandsDAO().find(wandId);
+        Mage supervisor = new MagesDAO().find(supervisorId);
 
         return new Mage(id, name, wand, supervisor, spells);
     }
@@ -42,7 +40,7 @@ public class MageDAO extends BaseDAO<Mage> {
 
     @Override
     public Object[] getColumnsValues(Mage value) {
-        Object[] values = {value.getName(), value.getWand().getId(), value.getSupervisor().getId()};
+        Object[] values = {value.getName(), value.getWand().getId(), value.getSupervisor() == null? null : value.getSupervisor().getId()};
         return values;
     }
 
@@ -54,22 +52,34 @@ public class MageDAO extends BaseDAO<Mage> {
     @Override
     public void update(Mage value) {
 
-        SpellDAO spellDAO = new SpellDAO();
+        super.update(value);
+        SpellsDAO spellDAO = new SpellsDAO();
         List<Spell> oldSpells = spellDAO.findMageSpells(value.getId());
         List<Spell> newSpells = value.getSpells();
-        if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
 
-            spellDAO.deleteAllSpellsForMage(value);
-            spellDAO.insertSpellsForMage(value, value.getSpells());
+        int mageId = value.getId();
+
+        if(newSpells.size()==0){
+            spellDAO.deleteAllSpellsForMage(mageId);
+        } else if(!newSpells.containsAll(oldSpells) || newSpells.size()!= oldSpells.size()){
+
+            spellDAO.deleteAllSpellsForMage(mageId);
+            spellDAO.insertSpellsForMage(value.getId(), value.getSpells());
         }
-        super.update(value);
     }
 
     @Override
     public void insert(Mage value) {
-        SpellDAO spellDAO = new SpellDAO();
-        spellDAO.insertSpellsForMage(value, value.getSpells());
         super.insert(value);
+
+        List<Spell> spells = value.getSpells();
+        List<Mage> mages = findALl();
+        mages.sort((o1, o2) -> o1.getId()-o2.getId());
+        int lastId = mages.get(mages.size()-1).getId();
+        if (spells.size() != 0) {
+            SpellsDAO spellDAO = new SpellsDAO();
+            spellDAO.insertSpellsForMage(lastId, spells);
+        }
     }
 
     @Override
@@ -79,11 +89,11 @@ public class MageDAO extends BaseDAO<Mage> {
     }
 
     @Override
-    public void delete(Mage value) {
-        SpellDAO spellDAO = new SpellDAO();
-        spellDAO.deleteAllSpellsForMage(value);
+    public void delete(int id) {
+        SpellsDAO spellDAO = new SpellsDAO();
+        spellDAO.deleteAllSpellsForMage(id);
 
-        super.delete(getPrimaryKeyValue(value));
+        super.delete(id);
     }
 
 

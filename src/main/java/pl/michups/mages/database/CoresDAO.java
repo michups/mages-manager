@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by michups on 03.07.17.
  */
-public class CoreDAO extends BaseDAO<Core> {
+public class CoresDAO extends BaseDAO<Core> {
 
     private String[] columns = {"name", "power", "consistency"};
 
