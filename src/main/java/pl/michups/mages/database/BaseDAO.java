@@ -1,14 +1,18 @@
 package pl.michups.mages.database;
 
+import lombok.extern.java.Log;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by michups on 03.07.17.
  */
+@Log
 public abstract class BaseDAO<T> {
 
     public abstract String getTableName();
@@ -43,9 +47,10 @@ public abstract class BaseDAO<T> {
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement statement = con.prepareStatement(sql.toString())) {
             setParams(statement, params);
+            log.log(Level.FINE, statement.toString());
             statement.execute();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage(), ex);
         }
     }
 
@@ -54,6 +59,7 @@ public abstract class BaseDAO<T> {
         try (Connection con = ConnectionFactory.createConnection();
              PreparedStatement statement = con.prepareStatement(sql);) {
             setParams(statement, params);
+            log.log(Level.FINE, statement.toString());
             try (ResultSet result = statement.executeQuery();) {
                 while (result.next()) {
                     T value = parseValue(result);
@@ -61,7 +67,7 @@ public abstract class BaseDAO<T> {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage(), ex);
         }
         return values;
     }

@@ -1,5 +1,6 @@
 package pl.michups.mages.menu;
 
+import lombok.extern.java.Log;
 import pl.michups.mages.database.BaseDAO;
 
 import java.text.ParseException;
@@ -8,10 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TimeZone;
+import java.util.logging.Level;
 
 /**
  * Created by michups on 04.07.17.
  */
+@Log
 public abstract class BaseManager<T, D extends BaseDAO<T>> {
 
     protected D dao;
@@ -98,7 +101,7 @@ public abstract class BaseManager<T, D extends BaseDAO<T>> {
         try {
             date = inutUTC.parse(dateStr);
         } catch (ParseException ex) {
-            ex.printStackTrace();
+            log.log(Level.WARNING, ex.getMessage(), ex);
         }
         return date;
     }

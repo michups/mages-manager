@@ -49,7 +49,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pl.codementors.zoo.Manager</mainClass>
+                            <mainClass>pl.michups.mages.MainManager</mainClass>
                             <!--Add external libraries.-->
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>

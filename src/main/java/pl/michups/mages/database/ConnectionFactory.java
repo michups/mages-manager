@@ -23,10 +23,6 @@ public class ConnectionFactory {
 
     private static BasicDataSource ds;
 
-//    public static Connection createConnection() throws SQLException {
-//        Connection connection = DriverManager.getConnection(URL + PARAMS, USER, PASSWORD);
-//        return connection;
-//    }
 
     public static Connection createConnection() throws SQLException {
         if (ds == null) {
